@@ -1,6 +1,7 @@
 package collection.recruit.repo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import collection.recruit.vo.Recruitment;
 
@@ -39,6 +40,19 @@ public class RecruitmentRepository {
 		}
 		
 		db.remove(findRecruitment);
+		
+		// Iterator
+		/* 
+		Recruitment findRecruitment = getRecruitmentByNo(recruitmentNo);
+		
+		Iterator<Recruitment> iterator = db.iterator();
+		while(iterator.hasNext()) {
+			Recruitment recruitment = iterator.next();
+			if(recruitment.equals(findRecruitment)) {
+				iterator.remove();
+			}
+		}
+		*/
 	}
 	
 	// 전체 구직현황 조회하기
