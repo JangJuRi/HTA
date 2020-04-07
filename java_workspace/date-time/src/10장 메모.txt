@@ -1,0 +1,50 @@
+		
+		 Date : 시스템의 날짜와 시간정보를 표현하는 객체다.
+		 [ Date 주요 생성자 ]
+		 new Date()						현재 날짜와 시간정보를 포함하는 객체 생성
+		 new Date(long time)			전달받은 유닉스타임에 해당하는 날짜/시간정보를 포함하는 객체 생성
+		 
+		 [ Date 주요 메소드 ]
+		 long getTime()					유닉스타임을 반환한다.
+		 boolean before(Date when)		when으로 전달받은 날짜보다 이전 날짜이면 true 반환
+		 boolean after(Date when)		when으로 전달받은 날짜보다 이후 날짜이면 true 반환
+		 
+		 [ SimpleDateFormat ]
+		 String format(Date day)		날짜를 지정된 형식의 텍스트로 변환
+		 Date parse(String text)		지정된 형식의 텍스트를 날짜로 변환
+		 주요기호
+		 --------------------
+		 y	년
+		 M	월
+		 d	일
+		 E	요일
+		 a	오전/오후
+		 H	시간(0~23)
+		 h	시간(1~12)
+		 m	분(0~59)
+		 s	초(0~59)
+		 S	밀리초
+		 
+		 [ DecimalFormat ]
+		 String format(double number)	숫자를 지정한 형식의 텍스트로 변환
+		 String format(long number)
+		 
+		 Number format(String text)		지정된 형식의 텍스트를 숫자로 변환
+		 
+		 주요기호
+		 --------------------
+		 0	숫자
+		 #	숫자
+		 .	소숫점
+		 ,	자리수 구분
+		 
+		 [ String과 Integer, Long, Double ]
+		 String.valueOf(int number)			정수를 문자열로 변환하기
+		 String.valueOf(long number)
+		 String.valueOf(double number)
+		 
+		 int Integer.parseInt(String text)	텍스트를 숫자로 변환하기(텍스트에 숫자가 아닌 내용이 포함되어 있으면 오류 발생)
+		 long Long.parseLong(String text)
+		 double Double.parseDouble(String text)
+		 
+		 */

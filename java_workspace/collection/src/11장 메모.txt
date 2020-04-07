@@ -1,0 +1,79 @@
+[ 오토 박싱 (Auto-boxing) ]
+	기본 자료형값을 변수에 대입하거나, 매개변수로 전달할 때
+	변수의 타입이 int이면 정수값이 전달
+	변수의 타입이Integer 혹은 Object라면 그 정수값을 담은 Integer객체가 자동으로 생성된다.
+	
+	void m1(int no) { ... }			m1(10);
+	void m2(Integer no) { ... }	 	m2(10);		// m2(new Integer(10));		--> 오토박싱
+
+
+[ 오토 언박싱 (Auto-Unboxing) ]
+	Wrapper객체를 변수에 대입하거나, 매개변수로 전달할 때 변수의 타입이 기본자료형 타입이면 
+	자동으로 Wrapper객체에 저장된 기본 자료형값만 대입된다.
+
+	Double x = new Double(3.14);
+	double y = x;					// double y = x.doubleValue();
+	
+	Integer x = new Integer(100);
+	int y = x;						// int y = x.intValue();
+	
+	Long x = new Long(10000000000L);
+	long y = x;						// long y = x.longValue();
+	
+	ArratList<Integer> scores = new ArrayList<Integer>();
+	scores.add(new Integer(100));
+	scores.add(98);
+	
+	for (Integer s : scores) {					for (int s : scores) {
+									
+	}											}
+	
+[ Collection<E> ]
+	여러 개의 객체를 저장하는 객체에 대한 표준을 설계한 인터페이스
+	add(E e), contains(Object o), clear(), isEmpty(), remove(Object o), size(), iterator()
+	
+	[ List<E> ]
+		저장한 순서대로 다시 꺼낼 수 있다. (순서 보장)
+		-- 구현클래스 --
+		ArrayList<E>		: 가장 많이 사용된다.
+		LinkedList<E>		: 추가, 삭제가 빈번한 경우 사용된다.
+		Vector<E>			: 멀티스레드 환경에서 사용한다.
+		Stack<E>			: 
+		
+	[ Set<E> ]
+		동일한 객체를 저장할 수 없다. (중복을 허용하지 않음)
+		-- 구현클래스 --
+		HashSet<E>			: 가장 많이 사용된다.
+		SortedSet<E>
+		TreeSet<E>			: 오름차순으로 정렬되어 저장된다.
+		
+[ Iterator<E> ]
+	Collection<E>에 저장된 객체를 하나씩 꺼내는데 필요한 기능을 제공하는 인터페이스다.
+	모든 Collection<E>의 구현클래스(ArrayList, HashSet, LinkedList, Vector, Stack, TreeSet 등) 는
+	Iterator객체를 반환하는 iterator() 메소드가 존재한다.
+	* Iterator 객체는 해당 콜렉션 객체에 저장된 객체를 하나씩 꺼내도록 구현되어 있다.
+	-- 주요 메소드 --
+	boolean hasNext()		: 꺼낼 다음 번 객체가 있으면 true를 반환
+	E next()				: 다음 번 객체를 꺼낸다.
+	void remove()			: 현재 객체를 삭제한다.
+	
+[ Map<K, V> ]
+	key(이름)와 value(값)을 하나의 쌍으로 묶어서 저장하는 객체들의 표준이 설계된 인터페이스
+	key는 중복될 수 없다.
+	-- 주요 메소드 --
+	V put(K key, V value)				: key와 value의 쌍으로 값을 객체에 저장한다.
+							  		  	    동일한 이름의 key가 존재하면 value를 덮어쓴다.
+	V get(Object key)					: key와 대응되는 value를 꺼낸다.
+	boolean containsKey(Object Key)		: 지정된 key와 일치하는 key가 있으면 true를 반환
+	boolean containsValue(Object value)	: 지정된 value와 일치하는 value가 있으면 true를 반환
+	Set<K> keySet()						: Map에 저장된 모든 key를 Set에 담아서 반환
+	Set<Entry<K, V>> entrySet()			: Map에 저장된 모든 Entry(키와 값의 쌍)를 Set에 담아서 반환
+	V remove(Object key)				: Map에서 지정된 key에 해당하는 Entry를 삭제한다.
+	void clear							: 전부 삭제
+	boolean isEmpty()					: Map에 저장된 value가 하나도 없으면 true를 반환.
+	int size()							: Map에 저장된 객체의 갯수를 반환
+	-- 구현 클래스 --
+	HashMap			: 가장 많이 사용된다.
+	HashTable		: 멀티스레드 환경에서 사용한다.
+	TreeMap			: Key를 기준으로 오름차순 정렬한다.
+	
