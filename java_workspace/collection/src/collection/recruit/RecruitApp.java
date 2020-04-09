@@ -21,9 +21,9 @@ public class RecruitApp {
 			int menuNo = scanner.nextInt();
 			
 			if (menuNo == 1) {
-				System.out.println("==========================================================================");
-				System.out.println("1.이력서등록 2.경력사항등록 3.채용상태확인 4.이력서수정 5.구직신청 삭제");
-				System.out.println("==========================================================================");
+				System.out.println("================================================================================================");
+				System.out.println("1.이력서등록 2.경력사항등록 3.채용상태확인 4.이력서수정 5.구직신청 삭제  6.경력사항수정  7.경력사항삭제  8.지원자 수 조회  9.평균근무기간조회");
+				System.out.println("================================================================================================");
 				
 				System.out.print("구직자 메뉴를 선택하세요");
 				int empMenuNo = scanner.nextInt();
@@ -96,7 +96,47 @@ public class RecruitApp {
 					int recruitmentNo = scanner.nextInt();
 					
 					service.deleteRecruitment(recruitmentNo);
-				} 
+				} else if(empMenuNo == 6) {
+					// 경력사항 수정기능
+					System.out.print("구직신청번호를 입력해주세요 : ");
+					int recruitmentNo = scanner.nextInt();
+					System.out.print("회사명을 입력해주세요 : ");
+					String companyName = scanner.next();
+					
+					Career career = new Career();
+					System.out.print("새로운 재직회사명을 입력해주세요 : ");
+					String newCompanyName = scanner.next();
+					System.out.print("새로운 근무부서를 입력해주세요 : ");
+					String newDept = scanner.next();
+					System.out.print("새로운 직위를 입력해주세요 : ");
+					String newPosition = scanner.next();
+					System.out.print("새로운 근무년수를 입력해주세요 : ");
+					int newYear = scanner.nextInt();
+					
+					career.setCompanyName(newCompanyName);
+					career.setDept(newDept);
+					career.setPosition(newPosition);
+					career.setYear(newYear);
+					
+					service.updateCareer(recruitmentNo, companyName, career);
+					
+				} else if(empMenuNo == 7) {
+					// 경력사항 삭제 기능
+					System.out.print("구직신청번호를 입력해주세요 : ");
+					int recruitmentNo = scanner.nextInt();
+					System.out.print("회사명을 입력해주세요 : ");
+					String companyName = scanner.next();
+					
+					service.deleteCareer(recruitmentNo, companyName);
+					
+				} else if (empMenuNo == 8) {
+					// 지원자 수 조회
+					System.out.print("구직신청번호를 입력해주세요 : ");
+					int recruitmentNo = scanner.nextInt();
+					
+					service.findApplicantsCount(recruitmentNo);
+					
+				}
 				
 			} else if (menuNo == 2) {
 				System.out.println("==========================================================================");
@@ -127,8 +167,6 @@ public class RecruitApp {
 					boolean passed = false;
 					if(pass.equalsIgnoreCase("Y")) {
 						passed = true;
-					} else if (pass.equalsIgnoreCase("N")) {
-						passed = false;
 					}
 					
 					service.checkRecruitment(recruitmentNo, passed);
