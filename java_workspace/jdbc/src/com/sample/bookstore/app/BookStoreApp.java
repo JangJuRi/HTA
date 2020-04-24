@@ -1,6 +1,5 @@
 package com.sample.bookstore.app;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.sample.bookstore.dao.BookDAO;

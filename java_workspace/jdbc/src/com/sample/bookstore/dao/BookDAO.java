@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.sample.bookstore.util.ConnectionUtil;
+import com.sample.bookstore.util.QueryUtil;
 import com.sample.bookstore.vo.Book;
 
 /**
@@ -212,7 +213,20 @@ public class BookDAO {
 	 * @throws Exception
 	 */
 	public void updateBook(Book book) throws Exception {
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("book.updateBook"));
+		pstmt.setString(1, book.getTitle());
+		pstmt.setString(2, book.getWriter());
+		pstmt.setString(3, book.getPublisher());
+		pstmt.setString(4, book.getGenre());
+		pstmt.setInt(5, book.getPrice());
+		pstmt.setInt(6, book.getDiscountPrice());
+		pstmt.setInt(7, book.getStock());
+		pstmt.setInt(8, book.getNo());
+		pstmt.executeUpdate();
 		
+		pstmt.close();
+		connection.close();
 	}
 	
 	/**
@@ -231,6 +245,7 @@ public class BookDAO {
 		book.setPrice(rs.getInt("book_price"));
 		book.setDiscountPrice(rs.getInt("book_discount_price"));
 		book.setRegisteredDate(rs.getDate("book_registered_date"));
+		book.setStock(rs.getInt("book_stock"));
 		
 		return book;
 	}
