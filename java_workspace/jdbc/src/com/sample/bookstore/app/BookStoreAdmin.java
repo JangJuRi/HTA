@@ -3,17 +3,20 @@ package com.sample.bookstore.app;
 import java.util.List;
 
 import com.sample.bookstore.dao.BookDAO;
+import com.sample.bookstore.service.BookstoreService;
 import com.sample.bookstore.util.KeyboardUtil;
 import com.sample.bookstore.vo.Book;
+import com.sample.bookstore.vo.Question;
 
-public class BookStoreApp {
+public class BookStoreAdmin {
 
 	public static void main(String[] args) throws Exception {
 		BookDAO bookDAO = new BookDAO();
+		BookstoreService service = new BookstoreService();
 		
 		while(true) {
 			System.out.println("--------------------------------------");
-			System.out.println("1.전체조회   2.검색   3.등록   4.수정   5.삭제   0.종료");
+			System.out.println("1.전체조회   2.검색   3.등록   4.수정   5.삭제   6.문의게시판   0.종료");
 			System.out.println("--------------------------------------");
 			
 			System.out.print("메뉴를 선택하세요 : ");
@@ -142,6 +145,48 @@ public class BookStoreApp {
 				
 			} else if(menuNo == 5) {
 				
+				
+			} else if(menuNo == 6) {
+				System.out.println("[문의게시판]");
+				
+				System.out.println("-----------------");
+				System.out.println("1.전체조회   2.답변등록");
+				System.out.println("-----------------");
+				
+				System.out.print("메뉴를 선택하세요 : ");
+				int ansNo = KeyboardUtil.nextInt();
+				
+				if (ansNo == 1) {
+					List<Question> questions = service.문의글전체조회();
+					
+					if(questions.isEmpty()) {
+						System.out.println("[전체조회]");
+						System.out.println("!!! 문의내역이 존재하지 않습니다.");
+					} else {
+						System.out.println("-----------------------------------------------");
+						System.out.println("문의번호\t문의제목\t작성자\t날짜\t조회수");
+						for(Question question : questions) {
+							System.out.print(question.getNo() + "\t");
+							System.out.print(question.getTitle() + "\t");
+							System.out.print(question.getUser().getId() + "\t");
+							System.out.print(question.getRegisteredDate() + "\t");
+							System.out.print(question.getStatus() + "\t");
+							System.out.println(question.getViewCount());
+						}
+						System.out.println("-----------------------------------------------");
+					}
+					
+				} else if (ansNo == 2) {
+					System.out.println("[답변등록]");
+					
+					System.out.print("질문번호를 입력해주세요 : ");
+					int questionNo = KeyboardUtil.nextInt();
+					
+					System.out.print("답변내용을 입력해주세요 : ");
+					String content = KeyboardUtil.nextString();
+					
+					service.답변등록(questionNo, content);
+				}
 				
 			} else if(menuNo == 0) {
 				KeyboardUtil.close();
