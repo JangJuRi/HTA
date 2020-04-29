@@ -53,7 +53,7 @@ public class SchoolProfessorApp {
 				subject.setName(subjectName);
 				subject.setDepartment(department);
 				
-				service.과목등록(subject);
+				service.과목등록(subject); 
 				
 			} else if(menuNo == 3) {
 				System.out.println("[과정목록조회]");
