@@ -66,4 +66,49 @@ public class BookDao {
 		
 		return books;
 	}
+	
+	public List<Book> getAllBooks() throws SQLException {
+		List<Book> books = new ArrayList<Book>();
+		
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("book.getAllBooks"));
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			Book book = new Book();
+			
+			book.setNo(rs.getInt("book_no"));
+			book.setTitle(rs.getString("book_title"));
+			book.setWriter(rs.getString("book_writer"));
+			book.setPublisher(rs.getString("book_publisher"));
+			book.setPrice(rs.getInt("book_price"));
+			book.setDiscountPrice(rs.getInt("book_discount_price"));
+			book.setPoint(rs.getInt("book_point"));
+			book.setLikes(rs.getInt("book_likes"));
+			book.setStock(rs.getInt("book_stock"));
+			
+			books.add(book);
+		}
+		rs.close();
+		pstmt.close();
+		connection.close();
+		
+		return books;
+	}
+	
+	public void insertBook(Book book) throws SQLException {
+		
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("book.insertBook"));
+		pstmt.setString(1, book.getTitle());
+		pstmt.setString(2, book.getWriter());
+		pstmt.setString(3, book.getGenre());
+		pstmt.setString(4, book.getPublisher());
+		pstmt.setInt(5, book.getPrice());
+		pstmt.setInt(6, book.getDiscountPrice());
+		pstmt.setInt(7, book.getStock());
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		connection.close();
+	}
 }

@@ -22,6 +22,9 @@
 	%>
 	<div class="wrapper">
 		<div class="navi">
+			<%
+				String position = "home";
+			%>
 			<%@ include file="common/navibar.jsp" %>
 		</div>
 		<div class="header">
