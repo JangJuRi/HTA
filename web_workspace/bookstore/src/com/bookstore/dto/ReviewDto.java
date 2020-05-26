@@ -9,6 +9,7 @@ public class ReviewDto {
 	private int point;
 	private String content;
 	private Date registeredDate;
+	private String review_yn;
 	
 	public ReviewDto() {}
 
@@ -52,5 +53,11 @@ public class ReviewDto {
 		this.registeredDate = registeredDate;
 	}
 	
+	public String getReview_yn() {
+		return review_yn;
+	}
 	
+	public void setReview_yn(String review_yn) {
+		this.review_yn = review_yn;
+	}
 }

@@ -12,6 +12,8 @@
 		<div class="navi">
 			<%
 				String position = "order";
+			
+				String userId = request.getParameter("userid");
 			%>
 			<%@include file="../common/navibar.jsp" %>
 		</div>
@@ -21,7 +23,7 @@
 		<div class="body">
 			<p>주문이 완료되었습니다.</p>
 			<p>주문내역은 아래의 링크를 클릭하시면 확인할 수 있습니다.</p>
-			<p><a href="list.jsp"><strong>주문정보 확인</strong></a>
+			<p><a href="list.jsp?userid=<%=userId %>"><strong>주문정보 확인</strong></a>
 		</div>
 		<%@include file="../common/footer.jsp" %>
 	</div>

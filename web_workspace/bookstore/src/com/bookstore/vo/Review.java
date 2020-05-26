@@ -60,6 +60,4 @@ public class Review {
 	public void setRegisteredDate(Date registeredDate) {
 		this.registeredDate = registeredDate;
 	}
-	
-	
 }

@@ -22,5 +22,5 @@
 	orderDao.insertOrder(order);
 	
 	// 주문완료페이지를 재요청하는 응답을 클라이언트로 보내기
-	response.sendRedirect("completed.jsp");
+	response.sendRedirect("completed.jsp?userid=" + userId);
 %>

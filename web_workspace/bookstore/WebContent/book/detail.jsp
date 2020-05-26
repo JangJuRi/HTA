@@ -1,3 +1,4 @@
+<%@page import="com.bookstore.util.StringUtil"%>
 <%@page import="java.util.List"%>
 <%@page import="com.bookstore.util.NumberUtil"%>
 <%@page import="com.bookstore.dto.ReviewDto"%>
@@ -97,7 +98,7 @@
 							<td><%=reviewDto.getRegisteredDate() %></td>
 						</tr>
 						<tr>
-							<td colspan="6"><%=reviewDto.getContent() %></td>
+							<td colspan="6"><%=StringUtil.strWithBr(reviewDto.getContent())%></td>
 						</tr>
 					<%
 							}

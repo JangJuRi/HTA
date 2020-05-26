@@ -10,6 +10,7 @@ import java.util.List;
 import com.bookstore.dto.ReviewDto;
 import com.bookstore.util.ConnectionUtil;
 import com.bookstore.util.QueryUtil;
+import com.bookstore.vo.Review;
 
 public class ReviewDao {
 
@@ -38,5 +39,37 @@ public class ReviewDao {
 		connection.close();
 		
 		return reviews;
+	}
+	
+	public void insertReview(Review review) throws SQLException {
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("review.insertReview"));
+		
+		pstmt.setString(1, review.getContent());
+		pstmt.setInt(2, review.getPoint());
+		pstmt.setInt(3, review.getBookNo());
+		pstmt.setString(4, review.getUserId());
+		
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		connection.close();
+	}
+	
+	public ReviewDto searchReview(String userId, int bookNo) throws SQLException {
+		ReviewDto reviewDto = null;
+		
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("review.searchReview"));
+		pstmt.setString(1, userId);
+		pstmt.setInt(2, bookNo);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			reviewDto = new ReviewDto();
+			reviewDto.setReview_yn(rs.getString("review_yn"));
+		}
+		
+		return reviewDto;
 	}
 }

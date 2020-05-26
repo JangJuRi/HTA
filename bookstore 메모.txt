@@ -1,0 +1,248 @@
+바로구매
+- 요청 흐름
+	book/list.jsp->order/form.jsp
+- 요청 URL
+	order/form.jsp?bookno=책번호&amount=수량
+- 주문 처리
+	order/form.jsp
+		1. 요청파라미터 조회
+			bookno, amount 획득
+			int bookNo = Integer.parseInt(request.getParameter("bookno"));
+			int amount = Integer.parseInt(request.getParameter("amount"));
+
+		2. 책정보 조회
+			BookDetailDto 획득 <- 1번에서 획득한 bookno로 DB조회
+			BookDao bookDao= new BookDao();
+			BookDetailDto dto = bookDao.getBookByNo(bookNo);
+
+		3. 주문하는 책 정보 표시
+			표에 책정보 표시
+
+		4.  주문정보 폼 구성
+			<form action="order.jsp" metho="post" >
+			책번호	<input type="hidden" name="bookno" value="<%=bookNo%>">
+			주문가격 	<input type="hidden" name="price" value="<%=dto.getDiscountPrice()%>">
+			구매수량 	<input type="hidden" name="amount" value="<%=amount%>">
+			사용자 	<input type="text" name="userid" />
+			주문가격 	<input type="text" disabled value="<%=dto.getDiscountPrice()%> 원">
+			구매수량	<input type="text" disabled value="<%=amount%> 개">
+			</form>
+			* 아래쪽 두 개는 disable 상태여서 서버로 제출되지 않는다.
+
+		5. 책번호, 가격, 구매수량, 사ㅣ용자아이디를 order/order.jsp로 제출
+
+홈화면
+	요청 URL
+		/bookstore/home.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행작업
+		가장 최근에 등록된 책과 가장 최근에 가입한 사용자 조회한 후
+		HTML 컨텐츠 응답을 제공
+
+도서상세정보 화면
+	요청 URL
+		/bookstore/book/detail.jsp?bookn0=책번호
+	요청방식
+		GET
+	요청파라미터
+		bookno
+	jsp의 수행작업
+		요청파라미터로 전달된 책번호 획득
+		책번호에 해당하는 책의 상세정보와 책번호에 대한 리뷰정보를 조회한 후
+		HTML 컨텐츠 응답을 제공
+도서목록 화면
+	요청 URL
+		/bookstore/book/list.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행작업
+		모든 책정보를 책번호의 역순으로 조회해서
+		HTML 컨텐츠 응답을 제공
+
+책등록 요청
+	요청 URL
+		/bookstore/book/register.jsp
+	요청방식
+		POST
+	요청파라미터
+		title, writer, genre, publisher, price, discountPrice, stock
+	jsp의 수행작업
+		요청파라미터 정보 획득
+		Book객체를 생성해서 책정보 담기
+		BookDao의 insertBook(Book book)을 실행해서 DB에 책정보 저장
+		재요청할 URL(list.jsp)을 응답으로 제공
+
+바로구매 요청
+	요청URL
+		/bookstore/order/form.jsp?bookno=책번호&amount=1
+	요청방식
+		GET
+	요청파라미터
+		bookno, amount
+	jsp의 수행작업
+		요청파라미터 정보 획득
+		책정보를 조회한 후, 주문할 책에 대한 정보와
+		구매자, 구매가격, 구매수량, 결재하기버튼이 포함된 주문하기 폼을
+		HTML 컨텐츠로 제공
+
+결제요청
+	요청 URL
+		 /bookstore/order/order.jsp
+	요청방식
+		POST
+	요청파라미터
+		userid, bookno, price, amount
+	jsp의 수행작업
+		요청파라미터 정보 획득
+		Order객체 생성 주문정보 저장
+		재요청할 URL("completed.jsp")을 응답으로 제공
+
+사용자 리스트화면 요청
+	요청URL
+		/bookstore/user/list.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행방식
+		모든 사용자 정보를 조회한 후 HTML 컨텐츠 응답
+
+사용자 주문내역 화면 요청
+	요청URL
+		/bookstore/order/list.jsp?userid=사용자아이디
+	요청방식
+		GET
+	요청파라미터
+		userid
+	jsp의 수행방식
+		요청 파라미터 정보 획득
+		사용자 아이디에 해당하는 사용자의 모든 주문내역을 역순으로 조회해서 
+		HTML 컨텐츠 응답
+
+리뷰쓰기 화면 요청
+	요청 URL
+		/bookstore/review/form.jsp?userid=사용자아이디&bookno=책번호
+	요청방식
+		GET
+	요청파라미터
+		userid, bookno
+	jsp 수행작업
+		요청파라미터 정보 획득
+		책번호에 해당하는 책정보 조회
+		리뷰쓰기 입력폼 HTML 컨텐츠 응답으로 제공
+
+리뷰등록 요청
+	요청URL
+		/bookstore/review/register.jsp
+	요청방식
+		POST
+	요청파라미터
+		bookno, userid, point, content
+	jsp의 수행작업
+		요청파라미터 정보 획득
+		Review객체 생성해서 리뷰정보 담기
+		ReviewDao의 insertReview(Review review)를 실행해서 리뷰정보 DB에 저장
+		재요청할 URL("../book/detail.jsp?bookno=책번호")을 응답으로 제공
+
+
+모든 주문내역 조회 요청
+	요청URL
+		/bookstore/order/all.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행작업
+		모든 주문내역정보를 조회해서 HTML 컨텐츠 응답으로 제공
+		(주문번호, 사용자명, 제목, 주문가격, 구매수량, 결제금액, 주문날짜)
+
+
+추천하기 요청
+	요청URL
+		/bookstore/book/like.jsp?bookno=책번호&userid=사용자아이디
+	요청방식
+		GET
+	요청파라미터
+		bookno, userid
+	jsp의 수행작업
+		요청파라미터 정보 획득
+		LikeVo객체 생성하고, 추천정보 저장
+		LikeDao의 insertLike(LikeVo like) 실행해서 추천정보 저장하기
+		재요청할 URL("../book/detail.jsp?bookno=책번호")을 응답으로 제공
+
+자유게시판
+	테이블
+		sample_book_boards
+			board_no,		글번호
+			board_title,		제목
+			board_writer,		작성자
+			board_content,		내용
+			board_password,		비밀번호(수정, 삭제 시 필요)
+			board_hit,		조회수
+			board_del_yn		삭제여부
+			board_registered_date	등록일
+		
+		sample_book_board_replys
+			reply_no,		댓글번호
+			reply_writer,		작성자
+			reply_content,		내용
+			reply_registered_date,	등록일
+			board_no		게시글 번호
+
+
+모든 게시글 요청
+	요청URL
+		/bookstore/board/list.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행작업
+		모든 게시글 정보를 게시글번호의 역순으로 조회해서 HTML 컨텐츠 응답으로 제공
+		(글번호, 제목, 작성자, 조회수, 등록일을 출력함)
+
+
+게시글 등록화면 요청
+	요청URL
+		/bookstore/board/form.jsp
+	요청방식
+		GET
+	요청파라미터
+		없음
+	jsp의 수행작업
+	제목, 작성자, 내용, 글비밀번호를 입력하는 입력폼을 HTML 응답으로 제공
+
+
+
+게시글 등록 요청
+	요청URL
+		/bookstore/board/register.jsp
+	요청방식
+		POST
+	요청파라미터
+		title, writer, content, password(숫자4자리)
+	jsp의 수행작업
+		요청파라미터 획득
+		Board객체 생성하고, 게시글 정보 담기
+		BoardDao의 insertBoard(Board board) 실행해서 DB에 저장하기
+	재요청할 URL("list.jsp")을 응답으로 제공	
+
+
+게시글 상세정보 요청
+	요청URL
+		/bookstore/board/detail.jsp?boardno=글번호  <-- 게시글목록의 제목에 링크
+	요청방식
+		GET
+	요청파라미터
+		boardno
+	jsp의 수행작업
+		요청파라미터 획득
+		획득된 글번호에 해당하는 게시글 정보 조회		--> Board
+		획득된 글번호의 게시글과 관련된 댓글 전부 조회	--> List<Reply>
+		HTML 컨텐츠 응답제공 <-- Book 상세정보 화면과 같은 모양으로 구성
+		
