@@ -107,6 +107,7 @@ JSP 구성요소
 JSP 기본객체
 	- 요청객체
 		* HttpServletRequest의 구현객체다.
+		* request객체가 참조한다.
 		* 클라이언트가 서버로 보낸 요청메세지정보를 제공한다.
 		* jsp에서는 request 변수에 저장되어 있다.
 		* 주요 메소드
@@ -128,6 +129,7 @@ JSP 기본객체
 
 	- 응답객체
 		* HttpServletResponse의 구현객체다.
+		* response변수가 참조한다.
 		* 서버가 클라이언트로 보내는 응답메세지 정보를 담는다.
 		* jsp에서는 response 변수에 저장되어 있다.
 		* 주요 메소드
@@ -140,6 +142,97 @@ JSP 기본객체
 
 			- 응답헤드 관련
 				void setHeader(String name, String value)
+
+	- 세션객체
+		* HttpSession의 구현객체다.
+		* session변수가 참조한다.
+		* 클라이언트(브라우져)마다 하나씩 생성되는 객체다.
+		* 클라이언트의 개인적인 정보를 저장할 수 있다.
+
+	- 어플리케이션 객체
+		* ServletContext의 구현객체다.
+		* application변수가 참조한다.
+		* 웹애플리케이션 프로젝트 당 하나씩 생성되는 객체다.
+		* 웹 서버가 시작되면 생성되고, 웹서버가 중단될 때까지 유지된다.
+		* 모든 서블릿, 모든 JSP, 모든 클라이언트가 공유하는 값을 저장할 수 있다.
+		* 주요 메소드
+			String getInitParameter(String name)
+				- web.xml에 설정된 초기화 파라미터값을 반환한다.
+
+			String getRealPath(String path)
+				- 웹 애플리케이션내의 특정 경로에 해당하는 시스템상의 실제 경로를 반환한다.
+
+			URL getResource(String path)
+				- 웹 애플리케이션내의 특정 경로에 해당하는 시스템상의 실제 경로를 URL객체로 반환한다.
+
+			InputStream getResourceAsStream(String path)	
+				- 웹 애플리케이션내의 특정 경로에 해당하는 시스템상의 실제 자원을 읽어올 수 있는 스트림을 반환한다.
+
+	- 페이지컨텍스트 객체
+		* PageContext의 구현객체다.
+		* pageContext변수가 참조한다.
+		* JSP 페이지마다 하나씩 생성되는 객체다.
+		* JSP 페이지에 대한 정보를 담고 있다.
+		* 다른 기본객체를 조회하는 기능이 제공된다.
+		* 주요 메소드
+			HttpServletRequest getRequest()
+				- 해당 jsp 실행 시 전달받은 요청객체를 반환한다.
+
+			HttpServletResponse getResponse()
+				- 해당 jsp 실행 시 전달받은 응답객체를 반환한다.
+
+			HttpSession getSession()
+				- 해당 jsp의 실행을 요청한 브라우져와 연관된 세션객체를 반환한다.
+
+			ServletContext getServletContext()
+				- 해당 jsp가 포함된 웹프로젝트와 관련된 애플리케이션객체를 반환한다.
+
+			ServletConfig getServletConfig()
+				- 해당 jsp와 직접 연관된 Config객체를 반환한다.
+
+			JspWriter getOut()
+				- 해당 jsp의 실행을 요청한 클라이언트로 html 컨텐츠를 출력하는 스트림을 반환한다.
+
+			Exception getException()
+				- 오류 정보를 담고 있는 예외객체를 반환한다.
+
+			Object getPage()
+				- 현재 실행중인 JSP객체 자기자신을 반환한다.
+
+			* 위의 메소드를 jsp에서 실제로 사용할 가능성은 0%다.
+			* 위의 메소드를 실행해서 획득되는 객체는 jsp 실행 시 이미
+			  request, response, session, application, config, out, exception, page에 저장되어 있기 때문이다.
+	
+	- 서블릿컨피그 객체
+		* ServletConfig의 구현객체다.
+		* config변수가 참조한다.
+		* 서블릿객체마다 하나씩 생성되는 객체다.
+		* 해당 서블릿객체만 사용할 설정정보를 담고 있다.
+
+HTTP 요청 방식
+	* 클라이언트가 서버로 데이터(요청파라미터)를 전송하는 방식에 따라서 구분한 것이다.
+	- GET 방식
+		* 요청URL 뒤에 ?와 함께 요청파라미터를 붙여서 전송하는 것이다.
+		* 형식
+			http://서버명/경로/xxx.jsp?name=value&name=value&name=value
+		* 서버로 전달되는 데이터 형식
+			name=value&name=value&name=value
+		* 특징
+			<form>태그를 사용하지 않고도 요청파라미터값을 서버로 전송할 수 있다.
+			<a>태그의 href에 링크주소를 작성할 때 서버로 전송할 데이터를 쿼리스트링형태로 지정할 수 있다.
+			대용량의 데이터를 전달할 수 없다.
+			첨부파일 등을 전달할 수 없다.
+			서버로 전송되는 값이 URL에 그대로 노출되기 때문에 보안성이 취약하다.
+	
+	- POST 방식
+		* 요청메세지의 body부에 요청파라미터가 포함되어서 서버로 전송된다.
+		* <form method="post">로 지정했을 때만 폼입력값들이 POST 방식으로 전송된다.
+		* 서버로 전달되는 데이터 형식
+			name=value&name=value&name=value
+		* 특징
+			서버로 전송하는 데이터의 크기에 제한이 없다.
+			첨부파일을 서버로 전송할 수 있다.
+			서버로 전송되는 값이 URL에 노출되지 않기 때문에 GET방식보다 보안성이 높다.
 
 
 웹프로젝트 개발환경 구성하기

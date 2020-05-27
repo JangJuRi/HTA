@@ -28,6 +28,7 @@ public class BoardDao {
 			board.setWriter(rs.getString("board_writer"));
 			board.setHit(rs.getInt("board_hit"));
 			board.setRegisteredDate(rs.getDate("board_registered_date"));
+			board.setDel_yn(rs.getString("board_del_yn"));
 			
 			boards.add(board);
 		}
@@ -161,4 +162,30 @@ public class BoardDao {
 		
 		return boards;
 	}
+	
+	   public void deleteBoard(int boardNo) throws SQLException {
+	      Connection connection = ConnectionUtil.getConnection();
+	      PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.deleteBoard"));
+	      
+	      pstmt.setInt(1, boardNo);
+	      pstmt.executeUpdate();
+	       
+	      pstmt.close();
+	      connection.close();
+	   }
+	   
+	   public void updateBoard(Board board) throws SQLException {
+		   Connection connection = ConnectionUtil.getConnection();
+		   PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.updateBoard"));
+		   
+		   pstmt.setString(1, board.getTitle());
+		   pstmt.setString(2, board.getWriter());
+		   pstmt.setString(3, board.getContent());
+		   pstmt.setInt(4, board.getNo());
+		   pstmt.executeUpdate();
+		   
+		   pstmt.close();
+		   connection.close();
+	   }
+		   
 }

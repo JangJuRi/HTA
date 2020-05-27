@@ -74,7 +74,8 @@
 				</thead>
 				<tbody>
 				<%
-					for(Board board : boards) {		
+					for(Board board : boards) {	
+						if("N".equals(board.getDel_yn())) {
 				%>
 					<tr>
 						<td><%=board.getNo() %></td>
@@ -84,14 +85,16 @@
 						<td><%=board.getRegisteredDate() %></td>
 					</tr>
 				<%
-					}
+						} else {
 				%>
-					<%-- 
 					<tr>
-						<td>21</td>
+						<td><%=board.getNo() %></td>
 						<td colspan="4"><del>삭제된 글입니다.</del></td>
 					</tr>
-					--%>
+				<%
+						}
+					}
+				%>
 				</tbody>
 			</table>
 			<hr>

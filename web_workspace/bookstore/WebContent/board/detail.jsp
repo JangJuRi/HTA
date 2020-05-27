@@ -1,3 +1,7 @@
+<%@page import="com.bookstore.vo.Reply"%>
+<%@page import="java.util.List"%>
+<%@page import="com.bookstore.dao.ReplyDao"%>
+<%@page import="com.bookstore.util.StringUtil"%>
 <%@page import="com.bookstore.vo.Board"%>
 <%@page import="com.bookstore.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,6 +19,9 @@
 	
 		BoardDao boardDao = new BoardDao();
 		Board board = boardDao.getBoardByNo(boardNo);
+		
+		ReplyDao replyDao = new ReplyDao();
+		List<Reply> replies = replyDao.getAllReplys(boardNo);
 	%>
 <div class="wrapper">
 	<div class="navi">
@@ -51,12 +58,12 @@
 						<th>조회수</th>
 						<td><%=board.getHit() %></td>
 						<th>댓글개수</th>
-						<td>개</td>
+						<td><%=replies.size() %>개</td>
 					</tr>
 					<tr>
 						<th>내용</th>
 						<td colspan="3">
-							<%=board.getContent() %>
+							<%=StringUtil.strWithBr(board.getContent()) %>
 						</td>
 					</tr>
 				</tbody>
@@ -64,7 +71,7 @@
 			<hr>
 			<div class="text-right">
 				<a href="modifyform.jsp?boardno=<%=boardNo %>"><strong>[수정]</strong></a>
-				<a href="delete.jsp?boardno=<%=boardNo %>"><strong>[삭제]</strong></a>
+				<a href="del.jsp?boardno=<%=boardNo %>"><strong>[삭제]</strong></a>
 				<a href="list.jsp"><strong>[목록으로 가기]</strong></a>
 			</div>
 		</div>
@@ -78,22 +85,29 @@
 						<col width="10%">
 						<col width="40%">
 					</colgroup>
+				<%
+					for(Reply reply : replies) {
+				%>
 					<tr>
 						<th>작성자</th>
-						<td>홍길동</td>
+						<td><%=reply.getWriter() %></td>
 						<th>등록일</th>
-						<td>2020-05-25</td>
+						<td><%=reply.getRegisteredDate() %></td>
 					</tr>
 					<tr>
 						<th>내용</th>
 						<td colspan="3">
-							댓글입니다.댓글입니다.댓글입니다. 댓글입니다.
+							<%=StringUtil.strWithBr(reply.getContent()) %>
 						</td>
 					</tr>
+				<%
+					}
+				%>
 				</table>
 			</div>
 			<div class="well">
-				<form method="post" action="registerreply.jsp">
+				<form method="post" action="replyregister.jsp">
+					<input type="hidden" name="boardno" value="<%=boardNo %>"/>
 					<div class="form-group">
 						<label>작성자</label>
 						<div><input type="text" name="writer" /></div>
