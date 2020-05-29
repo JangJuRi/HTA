@@ -3,6 +3,7 @@
 <%@page import="com.bookstore.dao.BookDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="../common/logincheck.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,11 +59,6 @@
 				<input type="hidden" name="price" value="<%=bookDetailDto.getDiscountPrice() %>">
 				<input type="hidden" name="amount" value="<%=amount %>">
 				<input type="hidden" name="bookNo" value="<%=bookNo %>">
-
-					<div class="form-group">
-						<label>구매자</label>
-						<div><input type="text" name="userid"></div>
-					</div>
 					<div class="form-group">
 						<label>구매가격</label>
 						<div><input type="text" value="<%=NumberUtil.numberWithComma(bookDetailDto.getDiscountPrice()) %>원" disabled></div>

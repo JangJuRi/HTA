@@ -12,14 +12,9 @@
 <body>
 	<%
 		int boardNo = Integer.parseInt(request.getParameter("boardno"));
-		String error = request.getParameter("error");
 		
 		BoardDao boardDao = new BoardDao();
 		Board board = boardDao.getBoardByNo(boardNo);
-		
-		if("pwd".equals(error)) {
-			// 추가해야됨
-		}
 	%>
 
 <div class="wrapper">
@@ -33,7 +28,21 @@
 		<h1>게시글 수정</h1>
 	</div>
 	<div class="body">
+		
+		<%
+			String error = request.getParameter("error");
+			if("pwd".equals(error)) {
+		%>
+			<div>
+				<p style="color: red; font-style: italic;">게시판 비밀번호가 올바르지 않습니다.</p>
+			</div>
+		<%
+			} else {
+		%>
 		<p>게시글 정보확인하고 수정하세요.</p>
+		<%
+			}
+		%>
 		<div class="well">
 			<form method="post" action="update.jsp">
 				<input type="hidden" name="no" value="<%=boardNo %>" />
