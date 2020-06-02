@@ -278,17 +278,6 @@ HTTP 요청 방식
 			- ServletContext는 웹서버에 배포된 웹애플리케이션 프로젝트당 하나씩 생성되며, ServletContext에 저장된 속성은
 			  모든 Servlet, 모든 JSP, 모든 필터, 모든 리스너, 모든 클라이언트가 공유할 수 있다.
 
-	-------------------------------------------------------------------------------------------
-	요청	client		jsp	pageContext	request		session		application
-	===========================================================================================
-	요청1	browser1	JSP1	PAGE1		REQ1		SESS1		APP
-	-------------------------------------------------------------------------------------------
-	요청2	browser1	JSP2	PAGE2		REQ2		SESS1		APP
-	-------------------------------------------------------------------------------------------
-	요청3	browser2	JSP3	PAGE3		REQ3		SESS2		APP
-				JSP4	PAGE4		REQ3		SESS2		APP
-	-------------------------------------------------------------------------------------------
-
 
 로그인
 	- 인증된 사용자의 정보를 웹서버의 세션객체에 저장하는 것이다.
@@ -298,6 +287,121 @@ HTTP 요청 방식
 
 로그아웃
 	- 인증된 사용자 정보가 보관된 세션객체를 폐기하는 것이다.
+
+
+<form>태그의 enctype 속성
+	- 폼의 입력값을 서버로 전송하는 방식을 지정하는 속성이다.
+	- <form method="요청방식"
+		action="폼입력값의 전송방식
+
+	- enctype의 대표적인 속성값
+		* enctype="application/x-www-form-urlencoded"
+		- enctype의 기본값이다.
+		- enctype을 설정하지 않으면 이 값으로 자동 지정된다.
+		- 폼 입력값을 쿼리스트링 형태로 만들어서 요청 메세지의 몸체에 포함시켜서 서버로 전송한다.
+		- 첨부파일이 없는 경우에 사용한다.
+		- 예)
+			username=홍길동&userid=hong&userpwd=zxcv1234
+		
+		* enctype="multipart/form-data"
+		- 폼 입력값에 첨부파일이 있는 경우에 사용한다.
+		- 요청방식은 "post"방식으로 지정해야한다.
+		- 요청메세지 헤더정보의 컨텐츠 타입이 아래와 같이 지정된다.
+			Content-Type: multipart/form-data; boundary=----WebKitFormBoundarymvP1HiaHcLMASUN9
+		- boundary에 지정되어 있는 문자열을 전송되는 폼 입력값을 구분하는 구분자로 이용한다.
+		- 예)
+			----WebKitFormBoundarymvP1HiaHcLMASUN9
+			Content-Disposition; form-data; name="title"
+			회사규정집 요약본
+
+			----WebKitFormBoundarymvP1HiaHcLMASUN9
+			Content-Disposition; form-data; name="upfile"; filename="summary.txt"
+			Content-Type: text/plain
+
+			주식회사 중앙HTA학원규정집 파일 내용 내용 내용 내용 내용
+			----WebKitFormBoundarymvP1HiaHcLMASUN9--
+
+		- 요청객체의 getParameter(String name) 메소드로 폼 입력값을 가져올 수 없다.
+		- 파일업로드 처리를 도와주는 별도의 라이브러리가 필요하다.
+			cos.jar
+			commons-fileupload.jar
+
+
+MIME(Multipurpose Internet Mail Extensions)타입
+	- 클라이언트에게 전송된 컨텐츠의 타입을 알려주기 위한 용도로 사용된다.
+	- 구조
+		type/subtype
+		* type은 카테고리를 나타낸다.
+		* subtype은 카테고리에 속하는 개별타입을 나타낸다.
+		예) text/plain, text/css, text/html, text/xml
+		    image/jpg, image/png, image/bmp
+
+	- 주요 카테고리
+	---------------------------------------------------------------------------------------------------
+	타입		설명				서브타입 예
+	---------------------------------------------------------------------------------------------------
+	text		텍스트를 포함하는 모든 문서	text/plain, text/html,  text/css,  text/javascript
+	image		모든 종류의 이미지		image/gif,  image/png,  image/bmp, image/jpeg
+	audio		모든 종류의 오디오 파일		audio/midi, audio/ogg,  audio/wav, audio/mp3
+	video		모든 종류의 비디오 파일		video/mp4,  video/webm, video/ogg, video/mpeg
+	application	모든 종류의 이진데이터		application/octet-stream, application/pdf,
+							application/vnd.mspowerpoint
+	---------------------------------------------------------------------------------------------------
+	* 특정 서브타입을 확정지을 수 없는 경우
+		텍스트 문서인 경우에는 text/plain
+		이진 데이터인 경우에는 application/octet-stream이 사용되어야 한다.
+
+	- 웹 개발에서 자주 사용되는 MIME 타입
+	application/octet-stream
+		이진파일에 대한 기본값
+		특정 서브타입을 확정할 수 없는 이진파일을 의미한다.
+
+	text/plain
+		텍스트파일에 대한 기본값
+		
+	text/css
+		CSS StyleSheet 파일에 대한 MIME타입
+
+	text/html
+		모든 HTML 컨텐츠에 대한 MIME 타입
+
+	multipart/form-data
+		브라우저에서 서버로 폼 입력내용을 서버로 전송할 때 사용된다.
+		멀티파트 타입은 ---으로 시작하는 문자열로 구분되는 입력값들로 구성된다.
+		첨부파일이 업로드되는 폼에서 사용된다.
+
+	text/xml, application/xml
+		모든 XML 컨텐츠에 대한 MIME 타입		
+
+	text/json, application/json	
+		모든 JSON 컨텐츠에 대한 MIME 타입
+
+
+HTTP 응답코드
+	1xx
+		정보 응답
+		서버가 요청을 받았고, 요청을 처리중이다.
+		100 Continue
+		101 Switching Protocols 서버에서 프로토콜이 변경할 것임을 알림
+	2xx
+		성공 응답
+		200 OK			요청이 성공적으로 처리되었음
+		204 No Content		요청이 성공적으로 처리되었지만, 응답으로 보낼 컨텐츠는 없음
+	3xx
+		리다이렉션 메세지 응답
+		302 Found		클라이언트의 요청이 변경되었음을 응답으로 보낸다.
+		307 Temporary Redirect	response.sendRedirect(path)를 이용할 때 응답
+	4xx
+		클라이언트 에러 응답
+		401 Unauthorized	인증되지 않은 클라이언트의 요청임
+		403 Forbidden		필요한 접근권한을 가지고 있지 않음
+		404 Not Found		요청한 리소스를 찾을 수 없음
+		405 Method Not Allowed	요청한 방식(get, post, put, delete)을 서버가 허용하지 않음
+	5xx
+		서버 에러 응답
+		500 Internal Server Error 서버 내부 에러가 발생함 (클라이언트 요청 처리중 예외가 발생함)
+		503 Service Unavailable   서버가 요청을 처리할 준비가 되어 있지 않음
+
 
 
 웹프로젝트 개발환경 구성하기

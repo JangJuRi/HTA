@@ -7,8 +7,7 @@
 		<li><a href="/simple-board/user/my.jsp">내정보</a></li>
 		
 		<%
-			String isLogined = (String) session.getAttribute("LOGINED_YN");
-			if("Yes".equals(isLogined)) {
+			if("Y".equals(loginedYn)) {
 		%>
 		<li class="right"><a href="/simple-board/user/logout.jsp">로그아웃</a></li>
 		<%
@@ -20,6 +19,12 @@
 			}
 		%>
 	</ul>
-	
-	<p>홍길동님 환영합니다.</p>
+	<%
+		if("Y".equals(loginedYn)) {
+			String UserName = (String) session.getAttribute("LOGINED_USER_NAME");
+	%>
+	<p><%=UserName %>님 환영합니다.</p>
+	<%
+		}
+	%>
 </div>

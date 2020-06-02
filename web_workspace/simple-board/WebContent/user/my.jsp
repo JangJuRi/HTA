@@ -22,10 +22,10 @@
 		<h1>나의 정보</h1>
 	</div>
 	<div class="body">
-		<p><strong>홍길동</strong>님의 정보를 확인하세요</p>
+		<p><strong><%=loginedUserName %></strong>님의 정보를 확인하세요</p>
 		<%
 			BoardDao boardDao = new BoardDao();
-			List<Board> boards = boardDao.getBoardByUserId(loginedUserId);
+			List<Board> boards = boardDao.getBoardsByUserId(loginedUserId);
 			
 			ReplyDao replyDao = new ReplyDao();
 			List<Reply> replies = replyDao.getAllReplysByUserId(loginedUserId);

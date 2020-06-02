@@ -1,3 +1,4 @@
+<%@page import="com.simple.util.NumberUtil"%>
 <%@page import="com.simple.dao.BoardDao"%>
 <%@page import="com.simple.vo.Board"%>
 <%@page import="java.util.List"%>
@@ -22,7 +23,15 @@
 		<p>게시글 목록을 확인하세요</p>
 		<%
 			BoardDao boardDao = new BoardDao();
-			List<Board> boards = boardDao.getAllBoards();
+			
+			// 페이징
+			int rowsPerPage = 5;
+			int pageNo = NumberUtil.stringToInt(request.getParameter("page"), 1);
+		
+			int beginNumber = (pageNo - 1)*rowsPerPage + 1;
+			int endNumber = pageNo*rowsPerPage;
+			
+			List<Board> boards = boardDao.getBoardsByRange(beginNumber, endNumber);
 		%>
 		<div>
 			<table class="table">
@@ -71,6 +80,46 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="text-center">
+		<%
+			int pagesPerBlock = 5;
+			int rows = boardDao.getBoardsCount();
+			int totalPages = (int) Math.ceil((double)rows/rowsPerPage);
+			int totalBlocks = (int) Math.ceil((double)totalPages/pagesPerBlock);
+			int currentBlock = (int) Math.ceil((double)pageNo/pagesPerBlock);
+			
+			int beginPageNo = (currentBlock - 1)*pagesPerBlock + 1;
+			int endPageNo = currentBlock* pagesPerBlock;
+			if(currentBlock == totalBlocks) {
+				endPageNo = totalPages;
+			}
+		%>
+			<div class="pagination">
+			<%
+				if(pageNo > 1) {
+			%>
+				<a href="list.jsp?page=<%=pageNo - 1 %>">이전</a>
+			<%
+				}
+			%>
+			
+			<%
+				for(int num=beginPageNo; num<=endPageNo; num++) {
+			%>
+				<a href="list.jsp?page=<%=num %>" class="<%=pageNo==num ? "active" : "" %>"><%=num %></a>
+			<%
+				}
+			%>
+			<%
+				if(pageNo < totalPages) {
+			%>
+				<a href="list.jsp?page=<%=pageNo + 1 %>">다음</a>
+			<%
+				}
+			%>
+			</div>
+		</div>
+		
 		<div class="text-right">
 			[<a href="form.jsp">글 쓰기</a>]
 		</div>

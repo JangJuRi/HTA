@@ -1,3 +1,6 @@
+<%@page import="com.simple.vo.User"%>
+<%@page import="com.simple.dao.UserDao"%>
+<%@page import="com.simple.dto.BoardDto"%>
 <%@page import="com.simple.vo.Board"%>
 <%@page import="java.util.List"%>
 <%@page import="com.simple.dao.BoardDao"%>
@@ -16,16 +19,19 @@
 		<%@ include file="../common/navibar.jsp" %>
 	</div>
 	<div class="header">
-		<h1><small style="font-weight: normal;">홍길동</small>님의 게시글</h1>
-	</div>
-	<div class="body">
-		<p>게시글 목록을 확인하세요</p>
 		<%
 			String userId = request.getParameter("userid");
 		
 			BoardDao boardDao = new BoardDao();
-			List<Board> boards = boardDao.getBoardByUserId(userId);
+			List<Board> boards = boardDao.getBoardsByUserId(userId);
+			
+			UserDao userDao = new UserDao();
+			User user = userDao.getUserById(userId);
 		%>
+		<h1><small style="font-weight: normal;"><%=user.getName() %></small>님의 게시글</h1>
+	</div>
+	<div class="body">
+		<p>게시글 목록을 확인하세요</p>
 		<div>
 			<table class="table">
 				<colgroup>
@@ -53,8 +59,8 @@
 				%>
 					<tr>
 						<td class="text-center"><%=board.getNo() %></td>
-						<td><a href="hit.jsp?no=1"><%=board.getTitle() %></a></td>
-						<td class="text-center"><a href="writers.jsp?userid=<%=board.getWriter() %>"><%=board.getWriter() %></a></td>
+						<td><a href="hit.jsp?no=<%=board.getNo() %>"><%=board.getTitle() %></a></td>
+						<td class="text-center"><a href="writer.jsp?userid=<%=board.getWriter() %>"><%=board.getWriter() %></a></td>
 						<td class="text-center"><%=board.getHit() %></td>
 						<td class="text-center"><%=board.getReplyCnt() %></td>
 						<td class="text-center"><%=board.getCreateDate() %></td>

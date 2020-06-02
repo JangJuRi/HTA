@@ -8,7 +8,6 @@
 <%@page import="com.simple.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../common/logincheck.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,7 +50,7 @@
 					</tr>
 					<tr>
 						<th>작성자</th>
-						<td><a href="writers.jsp?userid=<%=boardDto.getWriter()%>"><%=boardDto.getWriterName() %></a></td>
+						<td><a href="writer.jsp?userid=<%=boardDto.getWriter()%>"><%=boardDto.getWriterName() %></a></td>
 						<th>등록일</th>
 						<td><%=boardDto.getCreateDate() %></td>
 					</tr>

@@ -53,7 +53,7 @@ public class BoardDao {
 		return boards;
 	}
 	
-	public List<Board> getBoardByUserId(String userId) throws SQLException {
+	public List<Board> getBoardsByUserId(String userId) throws SQLException {
 		List<Board> boards = new ArrayList<Board>();
 		
 		Connection connection = ConnectionUtil.getConnection();
@@ -85,7 +85,7 @@ public class BoardDao {
 		BoardDto boardDto = null;
 		
 		Connection connection = ConnectionUtil.getConnection();
-		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.getBoardsByNo"));
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.getBoardByNo"));
 		pstmt.setInt(1, boardNo);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -138,5 +138,50 @@ public class BoardDao {
 		
 		pstmt.close();
 		connection.close();
+	}
+	
+	public List<Board> getBoardsByRange(int beginNumber, int endNumber) throws SQLException {
+		List<Board> boards = new ArrayList<Board>();
+		
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.getBoardsByRange"));
+		pstmt.setInt(1, beginNumber);
+		pstmt.setInt(2, endNumber);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			Board board = new Board();
+			board.setNo(rs.getInt("board_no"));
+			board.setTitle(rs.getString("board_title"));
+			board.setWriter(rs.getString("board_writer"));
+			board.setContent(rs.getString("board_content"));
+			board.setHit(rs.getInt("board_hit"));
+			board.setReplyCnt(rs.getInt("board_reply_cnt"));
+			board.setDelYn(rs.getString("board_del_yn"));
+			board.setCreateDate(rs.getDate("board_create_date"));
+			
+			boards.add(board);
+		}
+		rs.close();
+		pstmt.close();
+		connection.close();
+		
+		return boards;
+	}
+	
+	public int getBoardsCount() throws SQLException {
+		int rowCount = 0;
+		
+		Connection connection = ConnectionUtil.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(QueryUtil.getSQL("board.getBoardsCount"));
+		ResultSet rs = pstmt.executeQuery();
+		rs.next();
+		rowCount = rs.getInt("cnt");
+		
+		rs.close();
+		pstmt.close();
+		connection.close();
+		
+		return rowCount;
 	}
 }

@@ -126,10 +126,9 @@ h3 {
 	float: left;
 	padding: 8px 16px;
 	text-decoration: none;
-	border-radius: 15px;
 }
 .pagination a.active {
-	background-color: #47e7ff;
+	background-color: #4CAF50;
 	color: white;
 }
 .pagination a:hover:not(.active) {

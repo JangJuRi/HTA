@@ -1,4 +1,4 @@
-<%@page import="com.simple.dto.boardDto"%>
+<%@page import="com.simple.dto.BoardDto"%>
 <%@page import="com.simple.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,7 +11,7 @@
 	String content = request.getParameter("content");
 	
 	BoardDao boardDao = new BoardDao();
-	boardDto boardDto = boardDao.getBoardByNo(boardNo);
+	BoardDto boardDto = boardDao.getBoardByNo(boardNo);
 	
 	if(boardDto.getWriter().equals(loginedUserId)) {
 		boardDto.setTitle(title);
