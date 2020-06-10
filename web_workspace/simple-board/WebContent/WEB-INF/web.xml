@@ -8,12 +8,8 @@
   
   <jsp-config>
   	<jsp-property-group>
-  		<url-pattern>/home.jsp</url-pattern>
-  		<url-pattern>/board/*</url-pattern>
-  		<url-pattern>/reply/*</url-pattern>
-  		<url-pattern>/user/*</url-pattern>
+  		<url-pattern>*.jsp</url-pattern>
   		<include-prelude>/common/session.jsp</include-prelude>
   	</jsp-property-group>
   </jsp-config>
-  
 </web-app>

@@ -6,6 +6,11 @@
 <meta charset="UTF-8">
 <title>Simple Board</title>
 <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+<style type="text/css">
+	.field-error {
+		border: 1px solid red;
+	}
+</style>
 </head>
 <body>
 <div class="wrapper">
@@ -32,7 +37,7 @@
 			}
 		%>
 		<div class="well">
-			<form method="post" action="register.jsp">
+			<form id="user-form" method="post" action="register.jsp" onsubmit="checkField(event)">
 				<div class="form-group">
 					<label>이름</label>
 					<div><input type="text" name="name" /></div>
@@ -59,5 +64,46 @@
 		<%@ include file="../common/footer.jsp" %>
 	</div>
 </div>
+<script type="text/javascript">
+	function checkField() {
+		clearErrorField();
+		
+		var nameField = document.querySelector("input[name=name]");
+		var emailField = document.querySelector("input[name=email]");
+		var idField = document.querySelector("input[name=id]");
+		var pwdField = document.querySelector("input[name=pwd]");
+		
+		var isPassed = true;
+		if(!nameField.value) {
+			nameField.classList.add("field-error");
+			isPassed = false;
+		}
+		if(!emailField.value) {
+			emailField.classList.add("field-error");
+			isPassed = false;
+		}
+		if(!idField.value) {
+			idField.classList.add("field-error");
+			isPassed = false;
+		}
+		if(!pwdField.value) {
+			pwdField.classList.add("field-error");
+			isPassed = false;
+		}
+		
+		if(!isPassed) {
+			event.preventDefault();
+		}
+		
+	}
+	
+	function clearErrorField() {
+		var fields = document.querySelectorAll(".form-group input");
+		for(var i=0; i<fields.length; i++) {
+			var input = fields[i];
+			input.classList.remove("field-error");
+		}
+	}
+</script>
 </body>
 </html>

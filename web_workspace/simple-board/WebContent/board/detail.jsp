@@ -33,7 +33,7 @@
 		int boardNo = Integer.parseInt(request.getParameter("no"));
 			BoardDao boardDao = new BoardDao();
 			BoardDto boardDto = boardDao.getBoardByNo(boardNo);
-	%>
+ 	%>
 		<p>게시글의 내용을 확인하고, 댓글도 달아보세요.</p>
 		<div>
 			<table class="table bordered">
