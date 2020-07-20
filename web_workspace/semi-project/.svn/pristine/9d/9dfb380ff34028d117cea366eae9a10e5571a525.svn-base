@@ -1,0 +1,20 @@
+search.getProductsByCategoryWithSearch=select a.product_no, name, price, point, discount_price,category, image_path, explain \
+		from br_products a \
+		join br_product_image_path b \
+		on b.product_no = a.product_no \
+		where a.category= ? \
+		and a.name like '%' || ? ||'%' \
+		order by a.reg_date desc, a.product_no asc 
+search.getAllProducts=select a.product_no, name, price, point, discount_price,category, image_path, explain \
+						from br_products a \
+						join br_product_image_path b \
+						on b.product_no = a.product_no \
+						where a.name like '%'|| ? ||'%' 
+search.getBestReviewByliked=select review_no, title, content, image_path, liked, deleted, rank \
+						    from( select a.review_no, title, content ,image_path, liked, deleted, \
+            						row_number () over (order by liked desc) rank \
+						            from (select review_no, title, content,liked, deleted, rownum as rn from br_reviews \
+					                order by liked desc, reg_date desc) a \
+					                join br_reviews_image_path c on c.review_no = a.review_no \
+					                where rn > 5 \
+					        )where rank <= 4
